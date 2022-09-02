@@ -22,25 +22,37 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
 
+  Offset offset = Offset.zero;
 
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(' Flutter Gesture Detector'),
-        centerTitle: true,
-      ),
-      body: GestureDetector(
-        child: Image.asset(
-          'assets/image.webp',
-          width: MediaQuery.of(context).size.width,
-        ),
-        onLongPress: () => showMessage('Long Press', context),
+      body: Stack(
+        children: [
+          Positioned(
+            left: offset.dx,
+            top: offset.dy,
+            child: GestureDetector(
+              child: Image.asset(
+                'assets/image.webp',
+                width: MediaQuery.of(context).size.width,
+              ),
+              onLongPress: () => showMessage('Long Press', context),
 
-        // onDoubleTapDown: handleDoubleTapDown,
-        // onDoubleTap: handleDoubleTap,
+              onPanUpdate: (details){
+                setState((){
+                  offset = Offset(offset.dx +  details.delta.dx,
+                      offset.dy + details.delta.dy);
+                });
+              },
 
+              // onDoubleTapDown: handleDoubleTapDown,
+              // onDoubleTap: handleDoubleTap,
+
+            ),
+          )
+        ],
       ),
     );
   }
